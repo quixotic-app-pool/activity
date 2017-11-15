@@ -1,0 +1,20 @@
+<template>
+  <view>sht</view>
+</template>
+
+
+<script>
+import wepy from 'wepy'
+export default class ActivityList extends wepy.page {
+  config = {
+    navigationBarTitleText: '校园活动'
+  }
+
+  data = {
+  }
+  methods = {
+  }
+}
+</script>
+<style lang="less">
+</style>

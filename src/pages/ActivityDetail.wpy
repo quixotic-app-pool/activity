@@ -1,0 +1,157 @@
+
+
+ <template>
+   <scroll-view class="ad-scroll-container" scroll-y bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+       <view class="act-detail-container">
+         <view class="ad-title" style="display:flex; flex-direction: row; justify-content:space-between; align-items:center">
+           <text>{{title}}</text>
+           <text class="at-right" style="padding:3px;">{{status}}</text>
+         </view>
+         <view class="ad-date" style="display:flex; align-items:center;">
+           <view>
+             <image class="ad-icon" src="./time.png"/>
+           </view>
+           <text style="padding-left:5px;">{{date}}</text>
+         </view>
+         <view class="ad-location" style="display:flex; align-items:center">
+           <view>
+             <image class="ad-icon" src="./location.png"/>
+           </view>
+           <text style="padding-left:5px;">{{location}}</text>
+         </view>
+         <map id="map" longitude="113.324520" latitude="23.099994" scale="14" markers="{{markers}}" show-location style="width: 100%; height: 150px;"></map>
+         <view class="add-title">
+           <text>活动介绍</text>
+         </view>
+         <view>
+           <text>
+             {{activitydetail}}
+           </text>
+         </view>
+       </view>
+       <navigator class="ad-join" style="border-top:1px solid #eee;border-bottom:1px solid #eee; " open-type="navigate">
+         <view class="ad-join-num">
+           <text>{{joinNum}} 人参与</text>
+         </view>
+         <view class="ad-join-avatar" style="display:flex; justify-content:space-between; align-items:center">
+           <repeat for="{{joinAvatar}}" for-item="item" for-index="index">
+             <image class="ada-icon" style="right: {{-(alength - index -1) * 10}}px" src="{{item}}"/>
+           </repeat>
+           <view>
+             <image class="ad-icon" style="position:relative;top:4px; padding-left:4px;" src="./right.png"/>
+           </view>
+         </view>
+       </navigator>
+   </scroll-view>
+   <button bindtap="onShareAppMessage" open-type="share" style="position: fixed; bottom: 0; left:0; right:0; background-color:rgb(250,217,39)">分享</button>
+ </template>
+
+ <script>
+ import wepy from 'wepy'
+
+ export default class Detail extends wepy.page {
+   config = {
+     navigationBarTitleText: '活动细节'
+   }
+   data = {
+     blog: {},
+     title: '职业发展协会演讲比赛',
+     date: '2017年10月22日（周日）04：30',
+     location: '南京市山畔水榭花苑西南（杨村二路）',
+     activitydetail: '话说这次活动那真是隆重，震惊四方，各路武林豪杰悉数登场！话说这次活动那真是隆重，震惊四方，各路武林豪杰悉数登场！话说这次活动那真是隆重，震惊四方，各路武林豪杰悉数登场！话说这次活动那真是隆重，震惊四方，各路武林豪杰悉数登场！',
+     status: '进行中',
+     joinNum: 8,
+     joinAvatar: ['./avatar.png', './avatar.png', './avatar.png', './avatar.png'],
+     alength: 0
+   }
+   onLoad () {
+     this.alength = (this.joinAvatar).length
+   }
+   methods = {
+     onShareAppMessage: function (res) {
+       if (res.from === 'button') {
+         // 来自页面内转发按钮
+         console.log(res.target)
+       }
+       return {
+         title: '职业发展协会演讲比赛',
+         path: '/pages/ActivityDetail',
+         success: function(res) {
+           // 转发成功
+         },
+         fail: function(res) {
+           // 转发失败
+         }
+       }
+     }
+
+   }
+ }
+ </script>
+ <style lang="less">
+ .ad-scroll-container {
+   margin-bottom: 100px;
+ }
+ .act-detail-container {
+   padding: 15px;
+   background-color: #fff;
+ }
+ .ad-title {
+   font-size: 24px;
+   border-bottom:1px solid #eee;
+ }
+ .at-right {
+   background-color: rgb(54, 269, 101);
+   border-radius: 2px;
+   font-size: 10px;
+ }
+ .ad-date {
+   padding-top: 15px;
+ }
+ .ad-date, .ad-location {
+   font-size: 14px;
+   opacity: 0.8;
+   text {
+     padding-left: 2px;
+     position: relative;
+     top: -4px;
+   }
+ }
+ .ad-location {
+   padding-bottom: 10px;
+ }
+ .add-title {
+   margin-top: 30px;
+   border-top: 1px solid #eee;
+   padding-top: 5px;
+   text-align: center;
+   font-size: 14px;
+   opacity: 0.7;
+ }
+ .ad-join {
+   margin: 10px 0 10px 0;
+   background-color: #fff;
+   width: 100%;
+   height: 50px;
+   line-height: 50px;
+ }
+ .ad-icon {
+   width: 20px;
+   height: 20px;
+ }
+ .ada-icon {
+   width: 30px;
+   height: 30px;
+   border-radius: 30px;
+   border:1px solid red;
+   position: relative;
+ }
+ .ad-join-num {
+   float: left;
+   padding-left: 15px;
+ }
+ .ad-join-avatar {
+   float: right;
+   padding-right: 15px;
+ }
+ </style>

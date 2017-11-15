@@ -1,0 +1,44 @@
+
+   <scroll-view class="ad-scroll-container" scroll-y bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-into-view="{{toView}}" scroll-top="{{scrollTop}}">
+       <view class="act-detail-container">
+         <view class="ad-title" style="display:flex; flex-direction: row; justify-content:space-between; align-items:center">
+           <text>{{title}}</text>
+           <text class="at-right" style="padding:3px;">{{status}}</text>
+         </view>
+         <view class="ad-date" style="display:flex; align-items:center;">
+           <view>
+             <image class="ad-icon" src="./time.png"/>
+           </view>
+           <text style="padding-left:5px;">{{date}}</text>
+         </view>
+         <view class="ad-location" style="display:flex; align-items:center">
+           <view>
+             <image class="ad-icon" src="./location.png"/>
+           </view>
+           <text style="padding-left:5px;">{{location}}</text>
+         </view>
+         <map id="map" longitude="113.324520" latitude="23.099994" scale="14" markers="{{markers}}" show-location="show-location" style="width: 100%; height: 150px;"/>
+         <view class="add-title">
+           <text>活动介绍</text>
+         </view>
+         <view>
+           <text>
+             {{activitydetail}}
+           </text>
+         </view>
+       </view>
+       <navigator class="ad-join" style="border-top:1px solid #eee;border-bottom:1px solid #eee; " open-type="navigate">
+         <view class="ad-join-num">
+           <text>{{joinNum}} 人参与</text>
+         </view>
+         <view class="ad-join-avatar" style="display:flex; justify-content:space-between; align-items:center">
+           <block for-item="item" for-index="index" wx:for="{{joinAvatar}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+             <image class="ada-icon" style="right: {{-(alength - index -1) * 10}}px" src="{{item}}"/>
+           </block>
+           <view>
+             <image class="ad-icon" style="position:relative;top:4px; padding-left:4px;" src="./right.png"/>
+           </view>
+         </view>
+       </navigator>
+   </scroll-view>
+   <button bindtap="onShareAppMessage" open-type="share" style="position: fixed; bottom: 0; left:0; right:0; background-color:rgb(250,217,39)">分享</button>
