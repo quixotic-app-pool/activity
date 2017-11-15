@@ -1,0 +1,5 @@
+@import "./../components/floatingbtn.wxss";
+@import "./../components/wofabu.wxss";
+@import "./../components/yijiaru.wxss";
+@import "./../components/tab.wxss";
+.tab_box{background:rgba(255,255,255,0.9);position:fixed;width:100%;z-index:2;border-bottom:1px solid #eee}

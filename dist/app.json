@@ -1,1 +1,1 @@
-{"pages":["pages/ActivityDetail"],"window":{"backgroundTextStyle":"light","navigationBarBackgroundColor":"rgb(250,217,39)","navigationBarTitleText":"WeChat","navigationBarTextStyle":"black"}}
+{"pages":["pages/ActivityList","pages/NewActivity","pages/ActivityDetail"],"window":{"backgroundTextStyle":"light","navigationBarBackgroundColor":"rgb(250,217,39)","navigationBarTitleText":"WeChat","navigationBarTextStyle":"black"}}

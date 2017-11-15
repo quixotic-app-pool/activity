@@ -1,0 +1,48 @@
+<template>
+    <view class="newBtn" @tap.stop="write" catchlongpress="longpress">
+      <image src="../pages/plus.png" class="newBtn-icon"></image>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+export default class Floatingbtn extends wepy.component {
+  data = {
+  }
+  methods = {
+    longpress() {
+      console.log('long press')
+      wepy.pageScrollTo({
+        scrollTop: 0
+      })
+    },
+    write() {
+      wepy.navigateTo({
+        url: '/pages/NewActivity'
+      })
+    }
+  }
+}
+</script>
+
+<style lang="less">
+.newBtn {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 50px;
+  height: 50px;
+  background: rgb(250,217,39);
+  border-radius: 25px;
+  box-shadow: 0 0 0 4px rgba(250,217,39,0.5);
+  transition: all 150ms ease;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.newBtn-icon {
+  width: 25px;
+  height: 25px;
+}
+</style>

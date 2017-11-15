@@ -1,20 +1,53 @@
 <template>
-  <view>sht</view>
+  <view>
+    <view class="tab_box">
+        <tab @currentTab.user="getCurrentTab" :currentTab.sync="currentTab" :tabList.sync="tabList"></tab>
+    </view>
+    <yijiaru wx:if="{{currentTab === 0}}"/>
+    <wofabu wx:else/>
+  </view>
+  <floatingbtn />
 </template>
 
 
 <script>
 import wepy from 'wepy'
+import Tab from '../components/tab'
+import Yijiaru from '../components/yijiaru'
+import Wofabu from '../components/wofabu'
+import floatingbtn from '../components/floatingbtn'
+
 export default class ActivityList extends wepy.page {
   config = {
-    navigationBarTitleText: '校园活动'
+    navigationBarTitleText: '校园活动lite'
   }
-
   data = {
+    list: [],
+    page: 1,
+    tabList: ['已加入', '我发布'],
+    currentTab: 0
+  }
+  components = {
+    tab: Tab,
+    yijiaru: Yijiaru,
+    wofabu: Wofabu,
+    floatingbtn: floatingbtn
   }
   methods = {
+    getCurrentTab(cur, evt) {
+      this.currentTab = cur
+      console.log('currenttab is ' + cur)
+      this.$apply()
+    }
   }
 }
 </script>
 <style lang="less">
+.tab_box {
+  background: rgba(255,255,255,0.9);
+  position: fixed;
+  width: 100%;
+  z-index: 2;
+  border-bottom:1px solid #eee;
+}
 </style>

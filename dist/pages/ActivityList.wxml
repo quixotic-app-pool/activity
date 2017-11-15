@@ -1,2 +1,127 @@
 
-  <view>sht</view>
+  <view>
+    <view class="tab_box">
+        
+  <!--index.wxml-->
+  <view class="swiper-tab">
+    <block  wx:key="$tab$key" wx:for="{{$tab$tabList}}" wx:for-index="$tab$index" wx:for-item="$tab$item">
+      <view style="padding-top: 10px;padding-bottom:10px;" data-current="{{$tab$index}}" class=" {{$tab$currentTab==$tab$index ? 'active' : ''}}" bindtap="$tab$swichNav">
+        {{$tab$item}}
+      </view>
+    </block>
+  </view>
+
+    </view>
+    
+  <scroll-view scroll-y="true" style="height: {{ $yijiaru$sysHeight }}px;position: relative;top: 60px;" wx:if="{{currentTab === 0}}">
+    <navigator  wx:for="{{ $yijiaru$list }}" wx:for-item="item" wx:key="{{ idx }}" wx:for-index="idx" url="/pages/ActivityDetail" open-type="navigate" style="padding-left:10px;padding-right:10px;border-top:10px solid rgba(230,230,230,0.5);border-bottom:1px solid rgba(230,230,230,0.5)">
+      <view style="display:flex; align-items: center;justify-content:space-between; padding-top:5px;padding-bottom:5px;border-bottom:1px dotted rgba(230,230,230,0.5);">
+        <view style="flex:3">
+          <text>狼人杀日常租局中</text>
+        </view>
+        <view style="flex:2;display:flex; justify-content:flex-end; font-size:14px; align-items: center">
+          <view style="padding-right:10px;">
+            <text>8</text><text style="opacity: 0.5">/12</text>
+          </view>
+          <text style="background-color: rgb(250,217,39); border-radius:4px; padding:2px;">报名中</text>
+        </view>
+      </view>
+      <view style="display:flex; justify-content:space-between; padding-top:20px; padding-bottom:20px; border-bottom:1px dotted rgba(230,230,230,0.5) ">
+        <view style="display:flex; align-items:center">
+          <view>
+            <image class="avatar-icon" style="border-radius:30px; border: 2px solid gold" src="../components/avatar.png"/>
+          </view>
+          <text style="padding-left:10px; font-size: 14px;">龟仙人</text>
+        </view>
+        <view style="display: flex;">
+          <view wx:for="{{$yijiaru$joinAvatar}}" key="index" index="index">
+            <image class="avatar-icon" style="right: {{-($yijiaru$alength - index -1) * 10}}px; border-radius:30px; border: 1px solid white" src="{{item}}"/>
+          </view>
+        </view>
+      </view>
+      <view style="font-size:14px; display:flex; justify-content:space-between;align-items: center; padding-top:5px;padding-bottom:5px;">
+        <view style="display:flex; align-items: center">
+          <view>
+            <image class="avatar-icon" src="../components/location2.png"/>
+          </view>
+          <text>朱家嘴</text>
+        </view>
+
+        <view style="display:flex; justify-content:space-between">
+            <view style="display:flex; align-items: center">
+              <view style="display:flex; align-items:flex-end">
+                <image class="para-icon" style="padding-left:5px;padding-right:5px;" src="../components/time.png"/>
+              </view>
+              <text>03/13 10:00</text>
+            </view>
+
+            <view style="display:flex; align-items: center">
+              <view style="display:flex; align-items:flex-end">
+                <image class="para-icon" style="padding-left:5px;padding-right:5px;" src="../components/gps.png"/>
+              </view>
+              <text>35.9km</text>
+            </view>
+        </view>
+      </view>
+    </navigator>
+  </scroll-view>
+
+    
+  <scroll-view scroll-y="true" style="height: {{ $wofabu$sysHeight }}px;position: relative;top: 60px;" wx:else>
+    <navigator  wx:for="{{ $wofabu$list }}" wx:for-item="item" wx:key="{{ idx }}" wx:for-index="idx" url="/pages/ActivityDetail" open-type="navigate" style="padding-left:10px;padding-right:10px;border-top:10px solid rgba(230,230,230,0.5);border-bottom:1px solid rgba(230,230,230,0.5)">
+      <view style="display:flex; align-items: center;justify-content:space-between; padding-top:5px;padding-bottom:5px;border-bottom:1px dotted rgba(230,230,230,0.5);">
+        <view style="flex:3">
+          <text>狼人杀日常租局中</text>
+        </view>
+        <view style="flex:2;display:flex; justify-content:flex-end; font-size:14px; align-items: center">
+          <view style="padding-right:10px;">
+            <text>8</text><text style="opacity: 0.5">/12</text>
+          </view>
+          <text style="background-color: rgb(250,217,39); border-radius:4px; padding:2px;">报名中</text>
+        </view>
+      </view>
+      <view style="display:flex; justify-content:space-between; padding-top:20px; padding-bottom:20px; border-bottom:1px dotted rgba(230,230,230,0.5) ">
+        <view style="display:flex; align-items:center">
+          <view>
+            <image class="avatar-icon" style="border-radius:30px; border: 2px solid gold" src="../components/avatar.png"/>
+          </view>
+          <text style="padding-left:10px; font-size: 14px;">龟仙人</text>
+        </view>
+        <view style="display: flex;">
+          <view wx:for="{{$wofabu$joinAvatar}}" key="index" index="index">
+            <image class="avatar-icon" style="right: {{-($wofabu$alength - index -1) * 10}}px; border-radius:30px; border: 1px solid white" src="{{item}}"/>
+          </view>
+        </view>
+      </view>
+      <view style="font-size:14px; display:flex; justify-content:space-between;align-items: center; padding-top:5px;padding-bottom:5px;">
+        <view style="display:flex; align-items: center">
+          <view>
+            <image class="avatar-icon" src="../components/location2.png"/>
+          </view>
+          <text>朱家嘴</text>
+        </view>
+
+        <view style="display:flex; justify-content:space-between">
+            <view style="display:flex; align-items: center">
+              <view style="display:flex; align-items:flex-end">
+                <image class="para-icon" style="padding-left:5px;padding-right:5px;" src="../components/time.png"/>
+              </view>
+              <text>03/13 10:00</text>
+            </view>
+
+            <view style="display:flex; align-items: center">
+              <view style="display:flex; align-items:flex-end">
+                <image class="para-icon" style="padding-left:5px;padding-right:5px;" src="../components/gps.png"/>
+              </view>
+              <text>35.9km</text>
+            </view>
+        </view>
+      </view>
+    </navigator>
+  </scroll-view>
+
+  </view>
+  
+    <view class="newBtn" catchtap="$floatingbtn$write" catchlongpress="$floatingbtn$longpress">
+      <image src="plus.png" class="newBtn-icon"/>
+    </view>

@@ -35,7 +35,7 @@
          </view>
          <view class="ad-join-avatar" style="display:flex; justify-content:space-between; align-items:center">
            <repeat for="{{joinAvatar}}" for-item="item" for-index="index">
-             <image class="ada-icon" style="right: {{-(alength - index -1) * 10}}px" src="{{item}}"/>
+             <image class="ada-icon" style="right: {{-(alength - index -1) * 10}}px;border-radius:30px; border: 1px solid white" src="{{item}}"/>
            </repeat>
            <view>
              <image class="ad-icon" style="position:relative;top:4px; padding-left:4px;" src="./right.png"/>
@@ -143,7 +143,6 @@
    width: 30px;
    height: 30px;
    border-radius: 30px;
-   border:1px solid red;
    position: relative;
  }
  .ad-join-num {
