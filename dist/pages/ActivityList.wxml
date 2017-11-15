@@ -17,11 +17,11 @@
     <navigator  wx:for="{{ $yijiaru$list }}" wx:for-item="item" wx:key="{{ idx }}" wx:for-index="idx" url="/pages/ActivityDetail" open-type="navigate" style="padding-left:10px;padding-right:10px;border-top:10px solid rgba(230,230,230,0.5);border-bottom:1px solid rgba(230,230,230,0.5)">
       <view style="display:flex; align-items: center;justify-content:space-between; padding-top:5px;padding-bottom:5px;border-bottom:1px dotted rgba(230,230,230,0.5);">
         <view style="flex:3">
-          <text>狼人杀日常租局中</text>
+          <text>{{item.title}}</text>
         </view>
         <view style="flex:2;display:flex; justify-content:flex-end; font-size:14px; align-items: center">
           <view style="padding-right:10px;">
-            <text>8</text><text style="opacity: 0.5">/12</text>
+            <text>{{item.numOfJoin}}</text><text style="opacity: 0.5">人参加</text>
           </view>
           <text style="background-color: rgb(250,217,39); border-radius:4px; padding:2px;">报名中</text>
         </view>
@@ -31,7 +31,7 @@
           <view>
             <image class="avatar-icon" style="border-radius:30px; border: 2px solid gold" src="../components/avatar.png"/>
           </view>
-          <text style="padding-left:10px; font-size: 14px;">龟仙人</text>
+          <text style="padding-left:10px; font-size: 14px;">{{item.who}}</text>
         </view>
         <view style="display: flex;">
           <view wx:for="{{$yijiaru$joinAvatar}}" key="index" index="index">
@@ -44,7 +44,7 @@
           <view>
             <image class="avatar-icon" src="../components/location2.png"/>
           </view>
-          <text>朱家嘴</text>
+          <text>{{item.location.name}}</text>
         </view>
 
         <view style="display:flex; justify-content:space-between">
@@ -52,14 +52,14 @@
               <view style="display:flex; align-items:flex-end">
                 <image class="para-icon" style="padding-left:5px;padding-right:5px;" src="../components/time.png"/>
               </view>
-              <text>03/13 10:00</text>
+              <text>{{item.date}} {{item.time}}</text>
             </view>
 
             <view style="display:flex; align-items: center">
               <view style="display:flex; align-items:flex-end">
                 <image class="para-icon" style="padding-left:5px;padding-right:5px;" src="../components/gps.png"/>
               </view>
-              <text>35.9km</text>
+              <text>{{item.distance}} km</text>
             </view>
         </view>
       </view>

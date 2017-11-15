@@ -1,11 +1,8 @@
 <template>
   <scroll-view scroll-y="true">
   <view>
-    <view style="border-bottom: 1px dotted rgb(230,230,230);flex-direction: row; padding:0 10px 0 10px; display:flex; justify-content:space-between;align-items:center;">
+    <view style="border-bottom: 1px dotted rgb(230,230,230);flex-direction: row; padding:10px; display:flex; justify-content:space-between;align-items:center;">
       <input style="" auto-focus type="text" bindinput="inputtitle" placeholder="活动名"/>
-      <view>
-        <image style="width: 40px;height:40px" src="./pic.png"/>
-      </view>
     </view>
 
     <textarea
@@ -16,6 +13,39 @@
       placeholder="活动介绍（选填）"
       placeholder-style="color: #999;">
     </textarea>
+
+    <view class="image-list" >
+          <!-- preview the image which already be choosed -->
+          <view
+            class="choosed-image-list"
+            wx:for="{{ images }}"
+            wx:for-item="image"
+            wx:for-index="idx"
+            wx:key="{{ idx }}">
+            <image
+              src="{{ image }}"
+              mode="aspectFill"
+              @tap.stop="previewImage({{ image }}, {{ images }})"
+              class="choosed-image"></image>
+            <view
+              class="choosed-image-delete-btn"
+              @tap.stop="deleteImage({{ idx }})">
+              <image
+                class="choosed-image-delete-btn-icon"
+                src="./delete.svg"></image>
+            </view>
+          </view>
+          <!-- image choosing btn -->
+          <view
+            class="choose-image-btn"
+            wx:if="{{ images.length < 3 }}"
+            bindtap="chooseImage">
+            <image
+              class="choose-image-btn-icon"
+              src="./choose-image.svg">
+            </image>
+          </view>
+    </view>
 
     <view style="border-bottom: 1px dotted rgb(230,230,230);">
       <picker mode="date" value="{{date}}" start="2015-09-01" end="2017-09-01" bindchange="bindDateChange">
@@ -33,7 +63,7 @@
     </view>
 
     <view style="border-bottom: 1px dotted rgb(230,230,230);">
-      <picker mode="date" value="{{date}}" start="2015-09-01" end="2017-09-01" bindchange="bindTimeChange">
+      <picker mode="time" value="{{time}}" start="6:00" end="23:30" bindchange="bindTimeChange">
         <view style="display:flex; justify-content: space-between; align-items:center;">
           <view style="padding:10px; display:flex; align-items:center; justify-content:center">
             <image style="padding-right:10px; width:30px; height:30px;" src="./time.png" />
@@ -48,18 +78,18 @@
     </view>
 
     <view style="border-bottom: 1px dotted rgb(230,230,230);">
-      <navigator mode="date" value="{{date}}" start="2015-09-01" end="2017-09-01" bindchange="bindTimeChange">
+      <view bindtap="chooseLocation">
         <view style="display:flex; justify-content: space-between; align-items:center;">
           <view style="padding:10px; display:flex; align-items:center; justify-content:center">
             <image style="padding-right:10px; width:30px; height:30px;" src="./location.png" />
             <text>地点</text>
           </view>
           <view style="display:flex; align-items:center; justify-content:center">
-            <text>{{location}}</text>
+            <text>{{locationName}}</text>
             <image style="padding-left:10px;padding-right:10px; width:30px; height:30px;" src="./right.png"/>
           </view>
         </view>
-      </navigator>
+      </view>
     </view>
 
     <view class="submit-btn">
@@ -68,7 +98,7 @@
         size="default"
         bindtap="send"
         class="submit"
-        disabled="{{ disabled }}">
+        disabled="{{ !valid }}">
         生成活动
       </button>
     </view>
@@ -79,38 +109,121 @@
 
 <script>
 import wepy from 'wepy'
+import sensitiveWordChecker from '../util/sensitiveWordChecker'
+
 export default class NewActivity extends wepy.page {
   config = {
     navigationBarTitleText: '创建活动'
   }
 
   data = {
-    blog: {},
-    disabled: true,
+    content: '',
+    title: '',
+    contentValid: false,
+    titleValid: false,
+    dateValid: false,
+    timeValid: false,
+    locationValid: false,
     date: '',
     time: '',
-    location: ''
+    locationName: '',
+    location: '',
+    images: ['./sample.jpg', './sample.jpg', './sample.jpg']
+  }
+  computed = {
+    valid () {
+      return this.contentValid && this.titleValid && this.dateValid && this.timeValid && this.locationValid
+    }
   }
   methods = {
     inputChange (e) {
-      console.log('input change')
-      this.disabled = e.detail.value === ''
+      this.content = e.detail.value
+      this.contentValid = !(e.detail.value === '')
     },
     inputtitle (e) {
-      console.log('input title')
+      this.title = e.detail.value
+      this.titleValid = !(e.detail.value === '')
     },
-    send () {
+    async send () {
+      wepy.showToast({
+        title: '发送中...',
+        icon: 'loading',
+        duration: 10000,
+        mask: true
+      })
+      if (sensitiveWordChecker(this.title) || sensitiveWordChecker(this.content)) {
+        wepy.hideToast()
+        wepy.showModal({
+          title: '提示',
+          content: '包含敏感词汇，发送失败：）',
+          showCancel: false
+        })
+        return
+      }
+      var pack = {title: this.title, detail: this.detail, date: this.date, time: this.time, location: this.location}
+      console.log(pack)
 
+      setTimeout(function() {
+        wepy.hideToast()
+        wepy.navigateBack({
+          delta: 1
+        })
+      }, 1000)
     },
     bindDateChange (e) {
       console.log('picker发送选择改变，携带值为', e.detail.value)
       this.date = e.detail.value
+      this.dateValid = true
       this.$apply()
     },
     bindTimeChange (e) {
       console.log('picker发送选择改变，携带值为', e.detail.value)
       this.time = e.detail.value
+      this.timeValid = true
       this.$apply()
+    },
+    /**
+     * 选择图片
+     */
+    async chooseImage () {
+      const { tempFilePaths } = await wepy.chooseImage({
+        count: 9 - this.images.length,
+        sizeType: 'compressed'
+      })
+      this.images.push(...tempFilePaths)
+      this.$apply()
+    },
+
+    /**
+     * 查看大图
+     * @param {String} cur 当前展示图片
+     * @param {Array}  imageList 展示的图片列表
+     */
+    previewImage (cur, imageList) {
+      wepy.previewImage({
+        current: cur,
+        urls: imageList
+      })
+    },
+
+    /**
+     * 删除选中图片
+     * @param {Number} idx 要删除的图片索引
+     */
+    deleteImage (idx) {
+      this.images.splice(idx, 1)
+      this.$apply()
+    },
+    async chooseLocation () {
+      var self = this
+      wepy.chooseLocation({
+        success: function(res) {
+          self.locationName = res.name ? res.name : res.address
+          self.location = {name: self.locationName, latitude: res.latitude, longitude: res.longitude}
+          self.locationValid = true
+          self.$apply()
+        }
+      })
     }
   }
 }
@@ -142,4 +255,50 @@ export default class NewActivity extends wepy.page {
     opacity: 0.7
   }
 }
+.image-list {
+    padding: 15px;
+    padding-top: 0;
+    width: 100%;
+    background: #FFF;
+    overflow: hidden;
+
+    .choosed-image-list {
+      position: relative;
+      float: left;
+      width: 70px;
+      height: 70px;
+      margin-right: 15px;
+      margin-top: 15px;
+
+      .choosed-image {
+        width: 100%;
+        height: 100%;
+      }
+
+      .choosed-image-delete-btn {
+        position: absolute;
+        right: -10px;
+        top: -10px;
+        width: 20px;
+        height: 20px;
+      }
+
+      .choosed-image-delete-btn-icon {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    .choose-image-btn {
+      float: left;
+      width: 70px;
+      height: 70px;
+      margin-top: 15px;
+
+      .choose-image-btn-icon {
+        width: 70px;
+        height: 70px;
+      }
+    }
+  }
 </style>

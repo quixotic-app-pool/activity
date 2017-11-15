@@ -1,15 +1,27 @@
 
   <scroll-view scroll-y="true">
   <view>
-    <view style="border-bottom: 1px dotted rgb(230,230,230);flex-direction: row; padding:0 10px 0 10px; display:flex; justify-content:space-between;align-items:center;">
+    <view style="border-bottom: 1px dotted rgb(230,230,230);flex-direction: row; padding:10px; display:flex; justify-content:space-between;align-items:center;">
       <input style="" auto-focus type="text" bindinput="inputtitle" placeholder="活动名"/>
-      <view>
-        <image style="width: 40px;height:40px" src="./pic.png"/>
-      </view>
     </view>
 
     <textarea class="textarea" auto-focus bindinput="inputChange" maxlength="-1" placeholder="活动介绍（选填）" placeholder-style="color: #999;">
     </textarea>
+
+    <view class="image-list">
+          <!-- preview the image which already be choosed -->
+          <view class="choosed-image-list"  wx:for="{{ images }}" wx:for-item="image" wx:for-index="idx" wx:key="{{ idx }}">
+            <image src="{{ image }}" mode="aspectFill" catchtap="previewImage" class="choosed-image" data-wpypreviewimage-a="{{ image }}" data-wpypreviewimage-b="{{ images }}"/>
+            <view class="choosed-image-delete-btn" catchtap="deleteImage" data-wpydeleteimage-a="{{ idx }}">
+              <image class="choosed-image-delete-btn-icon" src="./delete.svg"/>
+            </view>
+          </view>
+          <!-- image choosing btn -->
+          <view class="choose-image-btn"  wx:if="{{ images.length < 3 }}" bindtap="chooseImage">
+            <image class="choose-image-btn-icon" src="./choose-image.svg">
+            </image>
+          </view>
+    </view>
 
     <view style="border-bottom: 1px dotted rgb(230,230,230);">
       <picker mode="date" value="{{date}}" start="2015-09-01" end="2017-09-01" bindchange="bindDateChange">
@@ -27,7 +39,7 @@
     </view>
 
     <view style="border-bottom: 1px dotted rgb(230,230,230);">
-      <picker mode="date" value="{{date}}" start="2015-09-01" end="2017-09-01" bindchange="bindTimeChange">
+      <picker mode="time" value="{{time}}" start="6:00" end="23:30" bindchange="bindTimeChange">
         <view style="display:flex; justify-content: space-between; align-items:center;">
           <view style="padding:10px; display:flex; align-items:center; justify-content:center">
             <image style="padding-right:10px; width:30px; height:30px;" src="./time.png"/>
@@ -42,22 +54,22 @@
     </view>
 
     <view style="border-bottom: 1px dotted rgb(230,230,230);">
-      <navigator mode="date" value="{{date}}" start="2015-09-01" end="2017-09-01" bindchange="bindTimeChange">
+      <view bindtap="chooseLocation">
         <view style="display:flex; justify-content: space-between; align-items:center;">
           <view style="padding:10px; display:flex; align-items:center; justify-content:center">
             <image style="padding-right:10px; width:30px; height:30px;" src="./location.png"/>
             <text>地点</text>
           </view>
           <view style="display:flex; align-items:center; justify-content:center">
-            <text>{{location}}</text>
+            <text>{{locationName}}</text>
             <image style="padding-left:10px;padding-right:10px; width:30px; height:30px;" src="./right.png"/>
           </view>
         </view>
-      </navigator>
+      </view>
     </view>
 
     <view class="submit-btn">
-      <button type="primary" size="default" bindtap="send" class="submit" disabled="{{ disabled }}">
+      <button type="primary" size="default" bindtap="send" class="submit" disabled="{{ !valid }}">
         生成活动
       </button>
     </view>
