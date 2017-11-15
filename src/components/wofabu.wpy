@@ -10,11 +10,11 @@
       style="padding-left:10px;padding-right:10px;border-top:10px solid rgba(230,230,230,0.5);border-bottom:1px solid rgba(230,230,230,0.5)">
       <view style="display:flex; align-items: center;justify-content:space-between; padding-top:5px;padding-bottom:5px;border-bottom:1px dotted rgba(230,230,230,0.5);">
         <view style="flex:3">
-          <text>狼人杀日常租局中</text>
+          <text>{{item.title}}</text>
         </view>
         <view style="flex:2;display:flex; justify-content:flex-end; font-size:14px; align-items: center">
           <view style="padding-right:10px;">
-            <text>8</text><text style="opacity: 0.5">/12</text>
+            <text>{{item.numOfJoin}}</text><text style="opacity: 0.5">人参加</text>
           </view>
           <text style="background-color: rgb(250,217,39); border-radius:4px; padding:2px;">报名中</text>
         </view>
@@ -24,7 +24,7 @@
           <view>
             <image class="avatar-icon" style="border-radius:30px; border: 2px solid gold" src="./avatar.png" />
           </view>
-          <text style="padding-left:10px; font-size: 14px;">龟仙人</text>
+          <text style="padding-left:10px; font-size: 14px;">{{item.who}}</text>
         </view>
         <view style="display: flex;">
           <view wx:for="{{joinAvatar}}" key="index" index="index">
@@ -37,7 +37,7 @@
           <view>
             <image class="avatar-icon" src="./location2.png" />
           </view>
-          <text>朱家嘴</text>
+          <text>{{item.location.name}}</text>
         </view>
 
         <view style="display:flex; justify-content:space-between">
@@ -45,14 +45,14 @@
               <view style="display:flex; align-items:flex-end">
                 <image class="para-icon" style="padding-left:5px;padding-right:5px;" src="./time.png"/>
               </view>
-              <text>03/13 10:00</text>
+              <text>{{item.date}} {{item.time}}</text>
             </view>
 
             <view style="display:flex; align-items: center">
               <view style="display:flex; align-items:flex-end">
                 <image class="para-icon" style="padding-left:5px;padding-right:5px;" src="./gps.png"/>
               </view>
-              <text>35.9km</text>
+              <text>{{item.distance}} km</text>
             </view>
         </view>
       </view>
@@ -73,11 +73,51 @@ export default class WoFaBu extends wepy.component {
     alength: 0
   }
 
-  onLoad() {
+  async onLoad() {
     this.list = dummy.yijiaruList
+    await this.updateGpsDistance()
     this.alength = (this.joinAvatar).length
   }
-  methods = {
+  computed = {
+
+    test() {
+      return 'it works'
+    }
+  }
+  async updateGpsDistance () {
+    var currentLocation = {}
+    var self = this
+    wepy.getLocation({
+      type: 'wgs84',
+      success: function(res) {
+        currentLocation = {latitude: res.latitude, longitude: res.longitude}
+        console.log(currentLocation)
+      }
+    })
+    this.list.forEach(function(item) {
+      self.getDistance(currentLocation, item)
+    })
+  }
+  async getDistance(current, target) {
+    var lat1 = current.latitude || 0
+    var lng1 = current.longitude || 0
+    var lat2 = target.location.latitude || 0
+    var lng2 = target.location.longitude || 0
+
+    lng1 = this.changeToRad(lng1)
+    lat1 = this.changeToRad(lat1)
+
+    lng2 = this.changeToRad(lng2)
+    lat2 = this.changeToRad(lat2)
+
+    var rad = Math.acos(Math.cos(lat1) * Math.cos(lat2) * Math.cos(lng1 - lng2) + Math.sin(lat1) * Math.sin(lat2))
+    if (rad > Math.PI) {
+      rad = Math.PI * 2 - rad
+    }
+    target.distance = (6371.004 * rad / 1000).toFixed(1)
+  }
+  changeToRad(angle) {
+    return angle / 180 * Math.PI
   }
 }
 </script>
